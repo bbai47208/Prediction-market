@@ -30,5 +30,13 @@ contract BettingContract {
         winner = winningEventId;
         bettingOpen = false;
     }
-
+    
+    // Withdraw winnings for a winning bet
+    function withdrawWinnings(uint256 eventId) public {
+        uint256 winnings = bets[eventId][msg.sender];
+        require(winner == eventId, "Event is not the winning event");
+        require(winnings > 0, "No winnings for this event");
+        bets[eventId][msg.sender] = 0;
+        payable(msg.sender).transfer(winnings);
+    }
 }
